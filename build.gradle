@@ -1,0 +1,73 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION.toInteger()
+    buildToolsVersion "${BUILD_TOOLS_VERSION}"
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+        versionCode 1
+        versionName "1.0"
+
+        // 在主工程中还需要声明下!!!
+        multiDexEnabled true
+    }
+
+    dexOptions {
+        javaMaxHeapSize "2g"
+        preDexLibraries = false
+    }
+
+    sourceSets {
+        main {
+//            manifest.srcFile 'AndroidManifest.xml'
+//            java.srcDirs = ['src']
+//            resources.srcDirs = ['src']  属于java中的配置,这里并不需要,否则指向src会将README.md等资源文件打包进去
+//            aidl.srcDirs = ['aidl']
+//            renderscript.srcDirs = ['src'] 当前并没用到renderscript,去掉
+//            res.srcDirs = ['res']
+//            assets.srcDirs = ['assets']
+//            jniLibs.srcDirs = ['libs']
+//            jni.srcDirs=["jni"] 开启jni
+
+        }
+        androidTest.setRoot('tests')
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs project(':dashplayer').file('libs')
+    }
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile files('libs/eventbus.jar')
+    compile files('libs/fastjson-1.2.8.jar')
+    compile files('libs/umeng-analytics-v6.0.7.jar')
+    compile files('libs/utdid4all-1.0.4.jar')
+    compile files('libs/glide-3.7.0.jar')
+    compile files('libs/okhttp-3.4.1.jar')
+    compile files('libs/okio-1.9.0.jar')
+
+    compile files('libs/zxing-2.2.jar')
+    compile 'com.android.support:support-v4:24.0.0'
+    compile 'com.android.support:multidex:1.0.1'
+
+
+    provided project(':dashplayer')
+    // provided project(':player')
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>视频播放器</title>
+		<style>
+			body {
+				margin: 0px;
+				padding: 0px;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				background-color: #000;
+			}
+			
+			#my-video {
+				position: relative;
+			}
+		</style>
+
+	</head>
+
+	<body scroll="no">
+		<video id="my-video" scroll="no" height="1px" width="1px" onended="onPlayOver()" onerror="onPlayError()"
+			   onplay="onPlayStart()" oncanplay="onPlayRealStart()"></video>
+		<script>
+			console.log('脚本运行');
+			var player = document.getElementById("my-video");
+			var isPaused = false;
+
+			// 初始化位置
+			function initPlayer() {
+				var sh = window.screen.height;
+				var ph = player.offsetHeight;
+				var gap = (sh - ph) / 2;
+				player.style.top = gap;
+				player.defaultPlaybackRate = 2;
+			}
+
+			// 视频播放开始的回调
+			function onPlayStart() {
+				console.log('播放开始' + player.currentSrc);
+
+			}
+
+			function onPlayRealStart() {
+				console.log('播放正式开始' + player.currentSrc);
+				showVideo();
+				initPlayer();
+				notifyNaEvent('onPlayStart','1',player.currentSrc,'');
+				isPaused = false;
+			}
+
+			// 视频播放结束的回调
+			function onPlayOver() {
+				console.log('感谢观看' + player.currentSrc);
+				notifyNaEvent('onPlayOver','1',player.currentSrc,'');
+			}
+
+			// 视频播放出错的回调
+			function onPlayError() {
+				console.log('播放出错' + player.currentSrc);
+				notifyNaEvent('onPlayError','1',player.currentSrc,'');
+			}
+
+			// 播放视频
+			function playVideo(filepath) {
+				hideVideo();
+				player.src = filepath;
+				player.play();
+			}
+
+			// 暂停播放
+			function pauseVideo() {
+				player.pause();
+				isPaused = true;
+			}
+
+			// 继续播放
+			function resumeVideo() {
+				if (isPaused) {
+					player.play();
+					isPaused = false;
+				}
+			}
+
+			// 停止播放
+			function stopVideo() {
+				player.pause();
+				hideVideo();
+			}
+
+			// 设置视频播放速度
+			function setPlaySpeed(speed) {
+				player.playbackRate = speed;
+				player.defaultPlaybackRate = speed;
+				console.log("播放速度：" + speed);
+			}
+
+			// 设置是否循环播放
+			function setPlayerLoop(flag) {
+				player.loop = flag;
+			}
+
+			// 设置音量
+			function setPlayerVolumn(volume) {
+				player.volume = volume;
+			}
+
+			// 获取播放信息，包括正在播放的文件、播放进度、播放速度、当前播放状态
+			function getPlayerInfo() {
+				var filepath = player.currentSrc;
+				var currentTime = player.currentTime;
+				var totalTime = player.duration;
+				var rate = player.playbackRate;
+				var isPlaying = player.paused;
+				var jsonRet = {};
+				jsonRet.file = filepath;
+				jsonRet.currentTime = currentTime;
+				jsonRet.totalTime = totalTime;
+				jsonRet.rate = rate;
+				jsonRet.isPlaying = isPlaying;
+				return JSON.stringify(jsonRet);
+			}
+			
+			// notify事件
+			function notifyNaEvent(methodName, actionId, args, callback) {
+				var msg = {};
+				msg.method = methodName;
+				msg.actionId = actionId;
+				msg.args = args;
+				msg.callback = callback;
+				prompt(JSON.stringify(msg));
+			}
+
+			function hideVideo() {
+				player.style.width = '1px';
+				player.style.height = '1px';
+			}
+
+			function showVideo() {
+				player.style.width = '100%';
+				player.style.height = '99%';
+			}
+		</script>
+	</body>
+
+</html>
