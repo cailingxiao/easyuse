@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- 英文语言 -->
-<resources>
-    <string name="app_name">Easyuse</string>
-    <string name="scan_text">put QR code to box and auto recognized.</string>
-    <string name="f_net_powered_by_x">website powered by %1$s</string>
-    <string name="scan_permission_tip">We need to access Camera...</string>
-</resources>
