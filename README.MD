@@ -4,9 +4,6 @@
 
 ## app 文件夹，存放测试工程
 
-## easyuse以aar包形式向外提供，输出时已经进行混淆，所以外部请勿混淆
--keep class com.cai.easyuse.** {*;}
-
 ## 输出请使用gradle命令（assembleRelease），产物会输出到out文件夹
 
 ## baseBiz存放基本业务逻辑依赖
