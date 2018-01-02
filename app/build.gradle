@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION.toInteger()
+    buildToolsVersion BUILD_TOOLS_VERSION
+    defaultConfig {
+        applicationId "com.io.cailingxiao.easyusetest"
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile ("com.android.support:appcompat-v7:$COMPILE_SDK_VERSION.3.0")
+    compile "com.android.support:support-v4:$COMPILE_SDK_VERSION.3.0"
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile project(':easyuse')
+
+//    compile(name: 'easyuse-release', ext: 'aar') {
+//        transitive = false
+//    }
+//    releaseCompile project(path: ':easyuse', configuration: 'easyuseRelease')
+//    compile project(path: ':easyuse')
+
+//     compile project(':scan')
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+}

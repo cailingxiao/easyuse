@@ -1,0 +1,17 @@
+
+
+//include ':db'
+//project(':db').projectDir = new File('easyuse/db')
+
+//include ':update'
+//project(':update').projectDir = new File('baseBiz/update')
+
+//include ':statistics'
+//project(':statistics').projectDir = new File('baseBiz/statistics')
+
+//include  ':scan'
+//project(':scan').projectDir = new File('baseBiz/scan')
+
+
+include ':app'
+include ':easyuse'

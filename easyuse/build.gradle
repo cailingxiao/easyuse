@@ -1,0 +1,96 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jakewharton.butterknife'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION.toInteger()
+    buildToolsVersion "${BUILD_TOOLS_VERSION}"
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+        versionCode LIB_VERSION_CODE.toInteger()
+        versionName LIB_VERSION_NAME
+
+        // 在主工程中还需要声明下!!!
+        multiDexEnabled true
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries = false
+    }
+
+    sourceSets {
+        main {
+//            manifest.srcFile 'AndroidManifest.xml'
+//            java.srcDirs = ['src']
+//            resources.srcDirs = ['src']  属于java中的配置,这里并不需要,否则指向src会将README.md等资源文件打包进去
+//            aidl.srcDirs = ['aidl']
+//            renderscript.srcDirs = ['src'] 当前并没用到renderscript,去掉
+//            res.srcDirs = ['res']
+//            assets.srcDirs = ['assets']
+//            jniLibs.srcDirs = ['libs']
+//            jni.srcDirs=["jni"] 开启jni
+
+        }
+        androidTest.setRoot('tests')
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+
+        }
+        release {
+            // 不混淆，调用方负责混淆，混淆参考proguard-android.txt
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+
+//buildscript {
+//    repositories {
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath 'com.jakewharton:butterknife-gradle-plugin:8.8.1'
+//        // NOTE: Do not place your application dependencies here; they belong
+//        // in the individual module build.gradle files
+//    }
+//}
+
+// 存在多份代码时，统一打包时用到的代码
+//allprojects {
+//    configurations {
+//        all*.exclude group: 'com.android.support', module: 'support-v4'
+//    }
+//}
+
+
+dependencies {
+    // compile fileTree(include: ['*.jar'], dir: 'libs')
+//    compile files('libs/eventbus.jar')
+//    compile files('libs/fastjson-1.2.8.jar')
+//    compile files('libs/glide-3.7.0.jar')
+//    compile files('libs/okhttp-3.4.1.jar')
+//    compile files('libs/okio-1.9.0.jar')
+
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile "com.alibaba:fastjson:1.2.44"
+    compile "com.github.bumptech.glide:glide:3.7.0"
+    compile "com.squareup.okhttp3:okhttp:3.9.1"
+    compile "com.squareup.okio:okio:1.13.0"
+    compile "de.greenrobot:greendao:2.1.0"
+
+
+    // 如果需要使用下面功能，需要在应用工程下添加
+    compile ("com.android.support:appcompat-v7:$COMPILE_SDK_VERSION.0.0")
+    compile "com.android.support:support-v4:$COMPILE_SDK_VERSION.0.0"
+    compile 'com.android.support:multidex:1.0.2'
+
+
+    // 接入butterknife，配合AS的Zelezny插件使用，无敌
+    compile ('com.jakewharton:butterknife:8.8.1')
+    // 同时需要在app的的build.gradle中声明。用于编译时解析注解
+    annotationProcessor ('com.jakewharton:butterknife-compiler:8.8.1')
+}
